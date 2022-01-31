@@ -1,0 +1,27 @@
+
+
+.top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to right, rgb(62, 62, 238), rgb(15, 15, 102));
+    color: white;
+    padding: 12px;
+}
+
+.search-box {
+    padding: 12px;
+    width: 20%;
+    margin:10px;
+    padding:10px;
+    border-radius: 8px;
+}
+
+.search-btn {
+    width: 20%;
+    margin: 10px;
+    padding: 3px;
+    background-color: rgb(74, 137, 255);
+    color: white;
+    border-radius: 8px;
+}
