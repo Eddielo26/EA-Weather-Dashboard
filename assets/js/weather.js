@@ -1,6 +1,6 @@
 var apiKey = "2f0aa3eeabaa9f5d0f299426c008697b";
 var today = moment().format('L');
-var searchHistory =[];
+var searchHistoryList =[];
 
 // function for current weather conditions
 function currentCondition(city) {
@@ -14,7 +14,7 @@ function currentCondition(city) {
         console.log(cityWeatherResponse);
 
         $('#weatherContent').css('display', 'block');
-        $('cityDetail').epmty();
+        $('#cityDetail').empty();
 
         var iconCode = cityWeatherResponse.weather[0].icon;
         var iconURL = `https://openweathermap.org/img/w/${iconCode}.png`;
@@ -69,7 +69,7 @@ function currentCondition(city) {
 }
 
 // Function for future conditions
-function futureCondidtion(lat, lon) {
+function futureCondition(lat, lon) {
 
     // 5 day forecast
     var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
@@ -79,7 +79,7 @@ function futureCondidtion(lat, lon) {
         method: 'GET'
     }).then(function(futureResponse){
         console.log(futureResponse);
-        $('#fiveDay').epmty();
+        $('#fiveDay').empty();
 
         for (let i = 1; i < 6; i++) {
             var cityInfo = {
@@ -110,3 +110,35 @@ function futureCondidtion(lat, lon) {
     });
 }
 
+// Add on click event listener
+$('#searchBtn').on('click', function(event) {
+    event.preventDefault();
+
+    var city = $("#enterCity").val().trim();
+    currentCondition(city);
+    if (!searchHistoryList.includes(city)) {
+        searchHistoryList.push(city);
+        var searchedCity = $(`
+            <li class="list-group-item">${city}</li>
+            `);
+        $("#searchHistory").append(searchedCity);
+    };
+    localStorage.setItem("city", JSON.stringify(searchHistoryList));
+    console.log(searchHistoryList);
+});
+
+$(document).on("click", ".list-group-item", function() {
+    var listCity = $(this).text();
+    currentCondition(listCity);
+});
+
+$(document).ready(function() {
+    var searchHistoryArr = JSON.parse(localStorage.getItem("city"));
+
+    if (searchHistoryArr !== null) {
+        var lastSearchedIndex = searchHistoryArr.length - 1;
+        var lastSearchedCity = searchHistoryArr[lastSearchedIndex];
+        currentCondition(lastSearchedCity);
+        console.log(`Last searched city: ${lastSearchedCity}`);
+    }
+});
