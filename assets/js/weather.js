@@ -15,10 +15,11 @@ function currentCondition(city) {
 
         $('#weatherContent').css('display', 'block');
         $('#cityDetail').empty();
-
+        // function to grab weather icon
         var iconCode = cityWeatherResponse.weather[0].icon;
         var iconURL = `https://openweathermap.org/img/w/${iconCode}.png`;
 
+        // function used to display temp, humidity, wind speed
         var currentCity = $(`
         <h2 id = "currentCity">
             ${cityWeatherResponse.name} ${today} <img src="${iconURL}" alt="${cityWeatherResponse.weather[0].description}" />
@@ -30,7 +31,7 @@ function currentCondition(city) {
 
         $('#cityDetail').append(currentCity);
 
-        // UV index
+        // Grab UV index for current city search
         var lat = cityWeatherResponse.coord.lat;
         var lon = cityWeatherResponse.coord.lon;
         var uviQueryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
@@ -43,16 +44,16 @@ function currentCondition(city) {
 
             var uvIndex = uviResponse.value;
             var uvIndexP = $(`
-            <p>UV Index:
-            <span id="uvIndexColor" class= "px-2 py-2 rounded">${uvIndex}</span>
-            </p>
+                <p>UV Index:
+                    <span id="uvIndexColor" class="px-2 py-2 rounded">${uvIndex}</span>
+                </p>
             `);
 
             $('#cityDetail').append(uvIndexP);
 
             futureCondition(lat, lon);
-
-            if (uvIndex >= 0 && uvIndex<= 2) {
+            // colored index for each uv index
+            if (uvIndex >= 0 && uvIndex <= 2) {
                 $("#uvIndexColor").css("background-color", "#3EA72D").css("color", "white");
             } else if (uvIndex >= 3 && uvIndex <= 5) {
                 $("#uvIndexColor").css("background-color", "#FFF300");
@@ -91,7 +92,8 @@ function futureCondition(lat, lon) {
 
             var currDate = moment.unix(cityInfo.date).format("MM/DD/YYYY");
             var iconURL = `<img src="https://openweathermap.org/img/w/${cityInfo.icon}.png" alt="${futureResponse.daily[i].weather[0].main}" />`;
-
+            // displays information for each day set in forecast
+            // date, icon, temp, humidity
             var futureCard = $(`
             <div class="pl-3">
                 <div class="card pl-3 pt-3 mb-3 bg-primary text-light" style="width: 12rem;>
@@ -114,6 +116,7 @@ function futureCondition(lat, lon) {
 $('#searchBtn').on('click', function(event) {
     event.preventDefault();
 
+
     var city = $("#enterCity").val().trim();
     currentCondition(city);
     if (!searchHistoryList.includes(city)) {
@@ -126,12 +129,13 @@ $('#searchBtn').on('click', function(event) {
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
     console.log(searchHistoryList);
 });
-
+// when listed items are clicked, previous weather searched will display
 $(document).on("click", ".list-group-item", function() {
     var listCity = $(this).text();
     currentCondition(listCity);
 });
 
+// last city searched will be present on display
 $(document).ready(function() {
     var searchHistoryArr = JSON.parse(localStorage.getItem("city"));
 
