@@ -7,6 +7,7 @@
 * [Description](#description)
 * [Functionality](#functionality)
 * [Image](#image)
+* [Deployed Link](#deployed-link)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Contact](#contact)
@@ -45,6 +46,9 @@ This is a weather dashboard with form inputs that will run in the browser and fe
 
 # Image
 ![Screen Shot 2022-03-12 at 4 00 48 AM](https://user-images.githubusercontent.com/94813193/158017168-cf34425b-9e32-4145-b8c6-7aab518719f9.png)
+
+# Deployed Link
+<a href="https://eddielo26.github.io/EA-Weather-Dashboard/">Weather dashboard</a>
 
 # Installation
 * Download or clone repository
